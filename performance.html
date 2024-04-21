@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Student Performance Analysis Dashboard</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar content -->
+    </div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <!-- Topbar Search -->
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <!-- Search form content -->
+                </form>
+                <button class="btn btn-sm btn-primary" onclick="openAddRecordForm()">Add Record</button>
+            </nav>
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Student Records</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Position</th>
+                                        <th>Office</th>
+                                        <th>Age</th>
+                                        <th>Start Date</th>
+                                        <th>Salary</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table rows will be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Record Form Modal -->
+    <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRecordModalLabel">Add New Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="addRecordForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nameInput">Name:</label>
+                            <input type="text" class="form-control" id="nameInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="positionInput">Position:</label>
+                            <input type="text" class="form-control" id="positionInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="officeInput">Office:</label>
+                            <input type="text" class="form-control" id="officeInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ageInput">Age:</label>
+                            <input type="number" class="form-control" id="ageInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="startDateInput">Start Date:</label>
+                            <input type="date" class="form-control" id="startDateInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="salaryInput">Salary:</label>
+                            <input type="text" class="form-control" id="salaryInput" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var data = [
+                { name: "Tiger Nixon", position: "System Architect", office: "Edinburgh", age: 61, start_date: "2011/04/25", salary: "$320,800" },
+                // Add more data objects as needed
+            ];
+
+            function populateTable() {
+                var tbody = $('#dataTable tbody');
+                tbody.empty();
+
+                data.forEach(function (item) {
+                    var row = $('<tr>');
+                    row.append('<td>' + item.name + '</td>');
+                    row.append('<td>' + item.position + '</td>');
+                    row.append('<td>' + item.office + '</td>');
+                    row.append('<td>' + item.age + '</td>');
+                    row.append('<td>' + item.start_date + '</td>');
+                    row.append('<td>' + item.salary + '</td>');
+                    row.append('<td>' +
+                        '<button class="btn btn-sm btn-primary" onclick="editRecord(' + data.indexOf(item) + ')"><i class="fas fa-edit"></i></button>' +
+                        '<button class="btn btn-sm btn-danger ml-2" onclick="deleteRecord(' + data.indexOf(item) + ')"><i class="fas fa-trash"></i></button>' +
+                        '</td>');
+                    tbody.append(row);
+                });
+            }
+
+            function deleteRecord(index) {
+                data.splice(index, 1);
+                populateTable();
+            }
+
+            function editRecord(index) {
+                // Implement edit functionality here, e.g., open a modal to edit the record
+                console.log('Editing record at index ' + index);
+            }
+
+            populateTable();
+
+            $('#addRecordForm').submit(function (event) {
+                event.preventDefault();
+                var name = $('#nameInput').val();
+                var position = $('#positionInput').val();
+                var office = $('#officeInput').val();
+                var age = $('#ageInput').val();
+                var startDate = $('#startDateInput').val();
+                var salary = $('#salaryInput').val();
+
+                data.push({
+                    name: name,
+                    position: position,
+                    office: office,
+                    age: age,
+                    start_date: startDate,
+                    salary: salary
+                });
+
+                $('#addRecordModal').modal('hide');
+                populateTable();
+
+                // Clear form inputs
+                $('#addRecordForm')[0].reset();
+            });
+
+            window.openAddRecordForm = function () {
+                $('#addRecordModal').modal('show');
+            };
+        });
+    </script>
+</body>
+
+</html>

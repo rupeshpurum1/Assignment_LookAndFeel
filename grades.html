@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Web</title>
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome icons -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar content here -->
+        </ul>
+        <!-- End of Sidebar -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar and Search form -->
+                <!-- Your existing content here -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addRecordModal">
+                        Add Record
+                    </button>
+
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Grade</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dummy data rows will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- End of Page Content -->
+            </div>
+            <!-- End of Content -->
+
+            <!-- Footer -->
+            <!-- Your existing footer content here -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <!-- Your existing scroll-to-top button here -->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <script>
+        // Dummy data (can be replaced with real data from database)
+        const data = [
+            { id: 1, name: 'John Doe', grade: 'A' },
+            { id: 2, name: 'Jane Smith', grade: 'B' },
+            { id: 3, name: 'Michael Johnson', grade: 'C' }
+        ];
+
+        // Function to render table rows with dummy data
+        function renderTable() {
+            const tbody = document.querySelector('#dataTable tbody');
+            tbody.innerHTML = '';
+            data.forEach((record) => {
+                const row = `
+                    <tr>
+                        <td>${record.id}</td>
+                        <td>${record.name}</td>
+                        <td>${record.grade}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="editRecord(${record.id})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRecord(${record.id})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Call renderTable initially
+        renderTable();
+
+        // Function to add a new record
+        function addRecord() {
+            // Dummy implementation for adding a new record
+            const newRecord = { id: data.length + 1, name: 'New Student', grade: 'F' };
+            data.push(newRecord);
+            renderTable();
+        }
+
+        // Function to edit a record (dummy implementation)
+        function editRecord(id) {
+            // Dummy implementation for editing a record
+            const record = data.find((r) => r.id === id);
+            if (record) {
+                record.name = 'Edited Student';
+                record.grade = 'A+';
+                renderTable();
+            }
+        }
+
+        // Function to delete a record (dummy implementation)
+        function deleteRecord(id) {
+            // Dummy implementation for deleting a record
+            const index = data.findIndex((r) => r.id === id);
+            if (index !== -1) {
+                data.splice(index, 1);
+                renderTable();
+            }
+        }
+
+        // Modal event listener for adding a record
+        $('#addRecordModal').on('hidden.bs.modal', function (e) {
+            addRecord();
+        });
+    </script>
+
+</body>
+
+</html>

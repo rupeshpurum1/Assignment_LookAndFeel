@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabulator Example</title>
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="example-table"></div>
+    <button id="add-row-button">Add Row</button>
+    <button id="load-data-button">Load Data</button>
+    <button id="save-data-button">Save Data</button>
+
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var table = new Tabulator("#example-table", {
+                layout: "fitColumns",
+                columns: [
+                    { title: "Name", field: "name" },
+                    { title: "Age", field: "age", align: "center" },
+                    { title: "Gender", field: "gender", align: "center" }
+                ]
+            });
+
+            // Function to handle adding a new row to the table
+            function addNewRow() {
+                var newRowData = { name: '', age: '', gender: '' };
+                table.addRow(newRowData, true);
+            }
+
+            // Event listener for the "Add Row" button
+            document.getElementById('add-row-button').addEventListener('click', function () {
+                addNewRow();
+            });
+
+            // Event listener for the "Load Data" button
+            document.getElementById('load-data-button').addEventListener('click', function () {
+                // Retrieve data from local storage
+                var savedData = JSON.parse(localStorage.getItem('tabulatorData')) || [];
+                table.setData(savedData);
+            });
+
+            // Event listener for the "Save Data" button
+            document.getElementById('save-data-button').addEventListener('click', function () {
+                // Get current table data
+                var currentData = table.getData();
+
+                // Save data to local storage
+                localStorage.setItem('tabulatorData', JSON.stringify(currentData));
+            });
+        });
+    </script>
+</body>
+
+</html>
