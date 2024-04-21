@@ -1,144 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<style>
+    .sidebar {
+        background-color: #08a8f1;
+        /* Sidebar background color */
+    }
+
+    .nav-link {
+        color: #ffffff;
+        /* Text color for nav links */
+        text-decoration: none;
+        /* Remove underline from links */
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-link:hover {
+        background-color: #070ff0a7;
+        /* Background color on hover */
+        border-radius: 5px;
+        /* Optional: Add rounded corners on hover */
+    }
+
+    .nav-link i {
+        margin-right: 10px;
+        /* Spacing between icon and text */
+    }
+</style>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Web</title>
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome icons -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Student Performance Analysis Dashboard Engine</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
-
     <div id="wrapper">
-
-        <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <!-- Sidebar content here -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <img src="img/favicon.ico" alt="Icon" width="30" height="30" style="margin-right: 10px;">
+                <!-- Adjust width and height as needed -->
+                <div class="sidebar-brand-text mx-3">SPADE</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+            <br>
+            <br>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Home Page</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <li class="nav-item active">
+                <a class="nav-link" href="grades.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Assessments/Grades</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <li class="nav-item active">
+                <a class="nav-link" href="performance.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Performance Trends</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>About Page</span></a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
         </ul>
         <!-- End of Sidebar -->
 
+        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <!-- Topbar and Search form -->
-                <!-- Your existing content here -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addRecordModal">
-                        Add Record
-                    </button>
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Table -->
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Grade</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Dummy data rows will be dynamically added here -->
-                            </tbody>
-                        </table>
+                <!-- Topbar Search -->
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </nav>
+            <!-- End of Topbar -->
+
+            <div id="content" style="padding-left: 5%; padding-right: 5%; width: 100%;">
+
+                <div id="example-table"></div>
+                <button id="add-row-button">Add Row</button>
+                <button id="edit-row-button">Edit Row</button>
+                <button id="delete-row-button">Delete Row</button>
+
+                <!-- Modal for adding/editing record -->
+                <div id="recordModal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2><span id="modalTitle">Add New Record</span></h2>
+                        <form id="recordForm">
+                            <input type="hidden" id="editRowId">
+                            <label for="name">Name:</label>
+                            <input type="text" id="nameInput" name="name" required><br><br>
+                            <label for="course">Course:</label>
+                            <input type="text" id="courseInput" name="course" required><br><br>
+                            <label for="assessmentType">Assessment Type:</label>
+                            <select id="assessmentTypeInput" name="assessmentType">
+                                <option value="quiz">Quiz</option>
+                                <option value="assignment">Assignment</option>
+                            </select><br><br>
+                            <label for="grade">Grade:</label>
+                            <input type="number" id="gradeInput" name="grade" min="0" max="100" required><br><br>
+                            <button type="submit" id="submitRecordButton">Submit</button>
+                        </form>
                     </div>
                 </div>
-                <!-- End of Page Content -->
+
+                <script type="text/javascript"
+                    src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+                <script>
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Sample data for the table
+                        var sampleData = [
+                            { id: 1, name: "John Doe", course: "Math", assessmentType: "Quiz", grade: 85 },
+                            { id: 2, name: "Jane Smith", course: "Science", assessmentType: "Assignment", grade: 92 },
+                            { id: 3, name: "Alice Johnson", course: "History", assessmentType: "Quiz", grade: 78 }
+                        ];
+
+                        // Initialize Tabulator table with sample data
+                        var table = new Tabulator("#example-table", {
+                            data: sampleData,
+                            // Other configuration options...
+                        });
+
+                        // Store the sample data in localStorage
+                        localStorage.setItem('tabulatorData', JSON.stringify(sampleData));
+                    });
+
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var tableData = JSON.parse(localStorage.getItem('tabulatorData')) || [];
+
+                        var table = new Tabulator("#example-table", {
+                            data: tableData,
+                            layout: "fitColumns",
+                            responsiveLayout: "hide",
+                            selectableRows: true,
+                            history: true,
+                            pagination: "local",
+                            paginationSize: 7,
+                            paginationCounter: "rows",
+                            movableColumns: true,
+                            initialSort: [
+                                { column: "name", dir: "asc" }
+                            ],
+                            columnDefaults: {
+                                tooltip: true
+                            },
+                            columns: [
+                                { title: "Name", field: "name", editor: "input" },
+                                { title: "Course", field: "course", editor: "input" },
+                                { title: "Assessment Type", field: "assessmentType", editor: "input" },
+                                { title: "Grade", field: "grade", editor: "input" }
+                            ]
+                        });
+
+
+
+                        function openModalForRecord(record) {
+                            document.getElementById('modalTitle').textContent = 'Edit Record';
+                            document.getElementById('editRowId').value = record.id;
+                            document.getElementById('nameInput').value = record.name;
+                            document.getElementById('courseInput').value = record.course;
+                            document.getElementById('assessmentTypeInput').value = record.assessmentType;
+                            document.getElementById('gradeInput').value = record.grade;
+                            document.getElementById('recordModal').style.display = "block";
+                        }
+
+                        document.getElementById('add-row-button').addEventListener('click', function () {
+                            document.getElementById('modalTitle').textContent = 'Add New Record';
+                            document.getElementById('editRowId').value = '';
+                            document.getElementById('recordForm').reset();
+                            document.getElementById('recordModal').style.display = "block";
+                        });
+
+                        document.getElementsByClassName('close')[0].addEventListener('click', function () {
+                            document.getElementById('recordModal').style.display = "none";
+                        });
+
+                        document.getElementById('recordForm').addEventListener('submit', function (event) {
+                            event.preventDefault();
+
+                            var formData = new FormData(this);
+                            var rowData = {};
+                            formData.forEach(function (value, key) {
+                                rowData[key] = value;
+                            });
+                            rowData.id = document.getElementById('editRowId').value || table.getDataCount() + 1;
+                            rowData.car = rowData.car === 'on'; // Convert checkbox value to boolean
+
+                            if (rowData.id) {
+                                // Update existing record
+                                var existingRecord = table.getData().find(record => record.id == rowData.id);
+                                if (existingRecord) {
+                                    table.updateRow(rowData.id, rowData);
+                                }
+                            } else {
+                                // Add new record
+                                table.addRow(rowData, true, "top");
+                            }
+
+                            localStorage.setItem('tabulatorData', JSON.stringify(table.getData()));
+
+                            // Clear the form and close the modal
+                            document.getElementById('recordForm').reset();
+                            document.getElementById('recordModal').style.display = "none";
+                        });
+
+                        document.getElementById('edit-row-button').addEventListener('click', function () {
+                            var selectedRows = table.getSelectedRows();
+                            if (selectedRows.length === 1) {
+                                openModalForRecord(selectedRows[0].getData());
+                            } else {
+                                alert('Please select a single row to edit.');
+                            }
+                        });
+
+                        document.getElementById('delete-row-button').addEventListener('click', function () {
+                            var selectedRows = table.getSelectedRows();
+                            if (selectedRows.length > 0) {
+                                selectedRows.forEach(row => table.deleteRow(row));
+                                localStorage.setItem('tabulatorData', JSON.stringify(table.getData()));
+                            } else {
+                                alert('Please select row(s) to delete.');
+                            }
+                        });
+                    });
+                </script>
             </div>
-            <!-- End of Content -->
+
+            <!-- End of Main Content -->
 
             <!-- Footer -->
-            <!-- Your existing footer content here -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; SPADE 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
         </div>
         <!-- End of Content Wrapper -->
+
     </div>
-    <!-- End of Wrapper -->
+    <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <!-- Your existing scroll-to-top button here -->
-
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-    <script>
-        // Dummy data (can be replaced with real data from database)
-        const data = [
-            { id: 1, name: 'John Doe', grade: 'A' },
-            { id: 2, name: 'Jane Smith', grade: 'B' },
-            { id: 3, name: 'Michael Johnson', grade: 'C' }
-        ];
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
 
-        // Function to render table rows with dummy data
-        function renderTable() {
-            const tbody = document.querySelector('#dataTable tbody');
-            tbody.innerHTML = '';
-            data.forEach((record) => {
-                const row = `
-                    <tr>
-                        <td>${record.id}</td>
-                        <td>${record.name}</td>
-                        <td>${record.grade}</td>
-                        <td>
-                            <button class="btn btn-primary btn-sm" onclick="editRecord(${record.id})">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteRecord(${record.id})">Delete</button>
-                        </td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
-            });
-        }
-
-        // Call renderTable initially
-        renderTable();
-
-        // Function to add a new record
-        function addRecord() {
-            // Dummy implementation for adding a new record
-            const newRecord = { id: data.length + 1, name: 'New Student', grade: 'F' };
-            data.push(newRecord);
-            renderTable();
-        }
-
-        // Function to edit a record (dummy implementation)
-        function editRecord(id) {
-            // Dummy implementation for editing a record
-            const record = data.find((r) => r.id === id);
-            if (record) {
-                record.name = 'Edited Student';
-                record.grade = 'A+';
-                renderTable();
-            }
-        }
-
-        // Function to delete a record (dummy implementation)
-        function deleteRecord(id) {
-            // Dummy implementation for deleting a record
-            const index = data.findIndex((r) => r.id === id);
-            if (index !== -1) {
-                data.splice(index, 1);
-                renderTable();
-            }
-        }
-
-        // Modal event listener for adding a record
-        $('#addRecordModal').on('hidden.bs.modal', function (e) {
-            addRecord();
-        });
-    </script>
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
 

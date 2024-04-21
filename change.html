@@ -1,59 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<style>
+    .sidebar {
+        background-color: #08a8f1;
+        /* Sidebar background color */
+    }
+
+    .nav-link {
+        color: #ffffff;
+        /* Text color for nav links */
+        text-decoration: none;
+        /* Remove underline from links */
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-link:hover {
+        background-color: #070ff0a7;
+        /* Background color on hover */
+        border-radius: 5px;
+        /* Optional: Add rounded corners on hover */
+    }
+
+    .nav-link i {
+        margin-right: 10px;
+        /* Spacing between icon and text */
+    }
+</style>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabulator Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Student Performance Analysis Dashboard Engine</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
 </head>
 
-<body>
-    <div id="example-table"></div>
-    <button id="add-row-button">Add Row</button>
-    <button id="load-data-button">Load Data</button>
-    <button id="save-data-button">Save Data</button>
+<body id="page-top">
+    <div id="wrapper">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <img src="img/favicon.ico" alt="Icon" width="30" height="30" style="margin-right: 10px;">
+                <!-- Adjust width and height as needed -->
+                <div class="sidebar-brand-text mx-3">SPADE</div>
+            </a>
 
-    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var table = new Tabulator("#example-table", {
-                layout: "fitColumns",
-                columns: [
-                    { title: "Name", field: "name" },
-                    { title: "Age", field: "age", align: "center" },
-                    { title: "Gender", field: "gender", align: "center" }
-                ]
-            });
+            <hr class="sidebar-divider my-0">
+            <br>
+            <br>
 
-            // Function to handle adding a new row to the table
-            function addNewRow() {
-                var newRowData = { name: '', age: '', gender: '' };
-                table.addRow(newRowData, true);
-            }
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Home Page</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <li class="nav-item active">
+                <a class="nav-link" href="grades.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Assessments/Grades</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <li class="nav-item active">
+                <a class="nav-link" href="performance.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Performance Trends</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>About Page</span></a>
+            </li>
 
-            // Event listener for the "Add Row" button
-            document.getElementById('add-row-button').addEventListener('click', function () {
-                addNewRow();
-            });
+            <hr class="sidebar-divider">
 
-            // Event listener for the "Load Data" button
-            document.getElementById('load-data-button').addEventListener('click', function () {
-                // Retrieve data from local storage
-                var savedData = JSON.parse(localStorage.getItem('tabulatorData')) || [];
-                table.setData(savedData);
-            });
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
-            // Event listener for the "Save Data" button
-            document.getElementById('save-data-button').addEventListener('click', function () {
-                // Get current table data
-                var currentData = table.getData();
+        </ul>
+        <!-- End of Sidebar -->
 
-                // Save data to local storage
-                localStorage.setItem('tabulatorData', JSON.stringify(currentData));
-            });
-        });
-    </script>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Topbar Search -->
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </nav>
+            <!-- End of Topbar -->
+
+            <div id="content" style="padding-left: 5%; padding-right: 5%; width: 100%;">
+
+                <div id="example-table"></div>
+                <button id="add-row-button">Add Row</button>
+                <button id="edit-row-button">Edit Row</button>
+                <button id="delete-row-button">Delete Row</button>
+
+                <!-- Modal for adding/editing record -->
+                <div id="recordModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2><span id="modalTitle">Add New Record</span></h2>
+                        <form id="recordForm">
+                            <input type="hidden" id="editRowId">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required><br><br>
+                            <label for="progress">Course :</label>
+                            <input type="text" id="name" name="name" required><br><br>
+                            <label for="progress">Assessment Type:</label>
+                            <select id="as" name="as">
+                                <option value="quiz">Quiz</option>
+                                <option value="assignment">Assignment</option>
+                            </select><br><br>
+
+                            <label for="Grade">Grade:</label>
+                            <input type="number" id="rating" name="rating" min="0" max="100" required><br><br>
+                            <!-- <label for="col">Color:</label>
+                            <input type="text" id="col" name="col" required><br><br>
+                            <label for="dob">Date of Birth:</label>
+                            <input type="date" id="dob" name="dob" required><br><br>
+                            <label for="car">Driver:</label>
+                            <input type="checkbox" id="car" name="car"><br><br> -->
+                            <label for="example">Example:</label>
+                            <textarea id="example" name="example" maxlength="10"></textarea><br><br>
+                            <button type="submit" id="submitRecordButton">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+                <script type="text/javascript"
+                    src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var tableData = JSON.parse(localStorage.getItem('tabulatorData')) || [];
+
+                        var table = new Tabulator("#example-table", {
+                            data: tableData,
+                            layout: "fitColumns",
+                            responsiveLayout: "hide",
+                            selectableRows: true,
+                            history: true,
+                            pagination: "local",
+                            paginationSize: 7,
+                            paginationCounter: "rows",
+                            movableColumns: true,
+                            initialSort: [
+                                { column: "name", dir: "asc" }
+                            ],
+                            columnDefaults: {
+                                tooltip: true
+                            },
+                            columns: [
+                                { title: "Name", field: "name", editor: "input" },
+                                { title: "Course", field: "co", editor: "input" },
+                                { title: "Assessment Type", field: "at", editor: "input" },
+                                { title: "Score", field: "sc", editor: "input" },
+                                { title: "Learning Objectives", field: "lo", editor: "textarea", editorParams: { elementAttributes: { maxlength: "10" }, mask: "DS, Algo", selectContents: true, verticalNavigation: "editor", shiftEnterSubmit: true } },
+
+                                // { title: "Task Progress", field: "progress", hozAlign: "left", formatter: "progress", editor: true},
+                                // { title: "Gender", field: "gender", width: 95, editor: "select", editorParams: { values: ["male", "female"] } },
+                                // { title: "Rating", field: "rating", formatter: "star", hozAlign: "center", width: 100, editor: true },
+                                // { title: "Color", field: "col", width: 130, editor: "input" },
+                                // { title: "Date Of Birth", field: "dob", width: 130, sorter: "date", hozAlign: "center" },
+                                // { title: "Driver", field: "car", width: 90, hozAlign: "center", formatter: "tickCross", sorter: "boolean", editor: true },
+                                // { title: "Example", field: "example", editor: "textarea", editorParams: { elementAttributes: { maxlength: "10" }, mask: "AAA-999", selectContents: true, verticalNavigation: "editor", shiftEnterSubmit: true } }
+                            ]
+                        });
+
+                        function openModalForRecord(record) {
+                            document.getElementById('modalTitle').textContent = 'Edit Record';
+                            document.getElementById('editRowId').value = record.id;
+                            document.getElementById('name').value = record.name;
+                            document.getElementById('co').value = record.progress;
+                            document.getElementById('at').value = record.gender;
+                            document.getElementById('sc').value = record.rating;
+                            document.getElementById('lo').value = record.col;
+                            // document.getElementById('dob').value = record.dob;
+                            // document.getElementById('car').checked = record.car;
+                            // document.getElementById('example').value = record.example;
+
+                            document.getElementById('recordModal').style.display = "block";
+                        }
+
+                        document.getElementById('add-row-button').addEventListener('click', function () {
+                            document.getElementById('modalTitle').textContent = 'Add New Record';
+                            document.getElementById('editRowId').value = '';
+                            document.getElementById('recordForm').reset();
+                            document.getElementById('recordModal').style.display = "block";
+                        });
+
+                        document.getElementsByClassName('close')[0].addEventListener('click', function () {
+                            document.getElementById('recordModal').style.display = "none";
+                        });
+
+                        document.getElementById('recordForm').addEventListener('submit', function (event) {
+                            event.preventDefault();
+
+                            var formData = new FormData(this);
+                            var rowData = {};
+                            formData.forEach(function (value, key) {
+                                rowData[key] = value;
+                            });
+                            rowData.id = document.getElementById('editRowId').value || table.getDataCount() + 1;
+                            rowData.car = rowData.car === 'on'; // Convert checkbox value to boolean
+
+                            if (rowData.id) {
+                                // Update existing record
+                                var existingRecordIndex = table.getData().findIndex(function (record) {
+                                    return record.id == rowData.id;
+                                });
+                                if (existingRecordIndex !== -1) {
+                                    table.updateRow(rowData.id, rowData);
+                                }
+                            } else {
+                                // Add new record
+                                table.addRow(rowData, true, "top");
+                            }
+
+                            localStorage.setItem('tabulatorData', JSON.stringify(table.getData()));
+
+                            // Clear the form and close the modal
+                            document.getElementById('recordForm').reset();
+                            document.getElementById('recordModal').style.display = "none";
+                        });
+
+                        document.getElementById('edit-row-button').addEventListener('click', function () {
+                            var selectedRows = table.getSelectedRows();
+                            if (selectedRows.length === 1) {
+                                openModalForRecord(selectedRows[0].getData());
+                            } else {
+                                alert('Please select a single row to edit.');
+                            }
+                        });
+
+                        document.getElementById('delete-row-button').addEventListener('click', function () {
+                            var selectedRows = table.getSelectedRows();
+                            if (selectedRows.length > 0) {
+                                selectedRows.forEach(function (row) {
+                                    table.deleteRow(row);
+                                });
+                                localStorage.setItem('tabulatorData', JSON.stringify(table.getData()));
+                            } else {
+                                alert('Please select row(s) to delete.');
+                            }
+                        });
+                    });
+                </script>
+            </div>
+
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; SPADE 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+
 </body>
 
 </html>

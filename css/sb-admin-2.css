@@ -4074,6 +4074,7 @@ input[type="button"].btn-block {
   border-radius: 0.35rem;
 }
 
+
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #fff;
@@ -4188,6 +4189,8 @@ input[type="button"].btn-block {
   max-height: 75vh;
   overflow-y: auto;
 }
+
+
 
 @media (max-width: 575.98px) {
   .navbar-expand-sm > .container,
