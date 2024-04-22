@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #4CA1AF, #C4E0E5);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #ffffff;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+            .team-member img {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                margin-right: 20px;
+                transition: transform 0.3s ease-in-out;
+            }
+
+                .team-member img:hover {
+                    transform: scale(1.1);
+                }
+
+        .team-member-info {
+            flex-grow: 1;
+            color: #ffffff;
+    </style>
+</head>
+<body>
+    <div class="intro">
+        <h1>STUDENT HUB</h1>
+        <p>We are a team of four passionate individuals dedicated to delivering exceptional results.</p>
+        <p>Our mission is to provide innovative solutions that drive success for our clients.</p>
+        <p>With years of experience and a commitment to excellence, we strive to exceed expectations.</p>
+        <p>Join us on this journey and experience the power of collaboration.</p>
+    </div>
+
+    <div class="team-members">
+        <div class="team-member">
+            <img src="img/Rupesh.jpg" alt="Rupesh">
+            <div class="team-member-info">
+                <h3>Rupesh Purum</h3>
+                <p>Rupesh is our lead developer with over 10 years of experience in software development. He played a crucial role in designing and implementing the core features of our project.</p>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <img src="img/Poorna.jpg" alt="Poorna">
+            <div class="team-member-info">
+                <h3>Poorna Chand Addala</h3>
+                <p>Poorna is our talented UI/UX designer. Her creative vision and attention to detail ensured a seamless and engaging user experience throughout our project.</p>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <img src="img/Sneha.jpg" alt="Sneha">
+            <div class="team-member-info">
+                <h3>Sneha Panjala</h3>
+                <p>Sneha is a student at USF's Business Analytics and Information Systems graduate program. she worked for over 2 years as a Project Engineer and Data Integrations Developer. My contributions include .</p>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <img src="img/Karun.jpg" alt="Karun">
+            <div class="team-member-info">
+                <h3>Karun Reddy Beeravalli</h3>
+                <p>Karun is our marketing guru. His strategic insights and creative campaigns played a pivotal role in promoting our project and reaching our target audience effectively.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript code to add interactivity to the images
+        const images = document.querySelectorAll('.team-member img');
+
+        images.forEach(image => {
+            image.addEventListener('mouseover', () => {
+                image.style.transform = 'scale(1.1)';
+            });
+
+            image.addEventListener('mouseout', () => {
+                image.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
+
+<div class="bottom-image">
+    <img src="img/ERD_image.png" alt="ERD_image">
+</div>
+
+<script>
+        const images = document.querySelectorAll('.team-member img');
+
+        images.forEach(image => {
+            image.addEventListener('mouseover', () => {
+                image.style.transform = 'scale(1.1)';
+            });
+
+            image.addEventListener('mouseout', () => {
+                image.style.transform = 'scale(1)';
+            });
+        });
+</script>
+</body>
+</html>
