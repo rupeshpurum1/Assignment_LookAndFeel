@@ -198,8 +198,24 @@
                         <script type="text/javascript"
                             src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
                         <script>
+
+
                             document.addEventListener('DOMContentLoaded', function () {
-                                var tableData = JSON.parse(localStorage.getItem('tabulatorData')) || [];
+                                var tableData = [
+                                    { id: 1, name: 'John Doe', course: 'Math', assessmentType: 'Quiz', grade: 85 },
+                                    { id: 2, name: 'Jane Smith', course: 'English', assessmentType: 'Assignment', grade: 92 },
+                                    { id: 3, name: 'Tom Brown', course: 'Science', assessmentType: 'Quiz', grade: 78 },
+                                    { id: 4, name: 'Alice Johnson', course: 'History', assessmentType: 'Assignment', grade: 88 },
+                                    { id: 5, name: 'Bob White', course: 'Geography', assessmentType: 'Quiz', grade: 90 },
+                                    { id: 6, name: 'John Doe', course: 'DIS', assessmentType: 'Quiz', grade: 85 },
+                                    { id: 7, name: 'Jane Smith', course: 'DIS', assessmentType: 'Assignment', grade: 92 },
+                                    { id: 8, name: 'Tom Brown', course: 'DIS', assessmentType: 'Quiz', grade: 78 },
+                                    { id: 9, name: 'Alice Johnson', course: 'DIS', assessmentType: 'Assignment', grade: 88 },
+                                    { id: 10, name: 'John Doe', course: 'DSP', assessmentType: 'Quiz', grade: 85 },
+                                    { id: 11, name: 'Jane Smith', course: 'DSP', assessmentType: 'Assignment', grade: 92 },
+                                    { id: 12, name: 'Tom Brown', course: 'DSP', assessmentType: 'Quiz', grade: 78 },
+                                    { id: 13, name: 'Alice Johnson', course: 'DSP', assessmentType: 'Assignment', grade: 88 }
+                                ];
 
                                 var table = new Tabulator("#example-table", {
                                     data: tableData,
