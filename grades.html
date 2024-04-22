@@ -27,6 +27,42 @@
         margin-right: 10px;
         /* Spacing between icon and text */
     }
+
+    /* Modal */
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+        padding: 10px 20px;
+        background-color: #08a8f1;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #007bff;
+    }
 </style>
 
 <head>
@@ -34,7 +70,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Student Performance Analysis Dashboard Engine</title>
-
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -115,195 +152,193 @@
             <div id="content" style="padding-left: 5%; padding-right: 5%; width: 100%;">
 
                 <div id="example-table"></div>
-                <button id="add-row-button">Add Row</button>
-                <button id="edit-row-button">Edit Row</button>
-                <button id="delete-row-button">Delete Row</button>
+                <button id="add-row-button" class="btn btn-primary mt-3">Add Row</button>
+                <button id="edit-row-button" class="btn btn-secondary mt-3">Edit Row</button>
+                <button id="delete-row-button" class="btn btn-danger mt-3">Delete Row</button>
 
                 <!-- Modal for adding/editing record -->
-                <div id="recordModal" class="modal" style="display: none;">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h2><span id="modalTitle">Add New Record</span></h2>
-                        <form id="recordForm">
-                            <input type="hidden" id="editRowId">
-                            <label for="name">Name:</label>
-                            <input type="text" id="nameInput" name="name" required><br><br>
-                            <label for="course">Course:</label>
-                            <input type="text" id="courseInput" name="course" required><br><br>
-                            <label for="assessmentType">Assessment Type:</label>
-                            <select id="assessmentTypeInput" name="assessmentType">
-                                <option value="quiz">Quiz</option>
-                                <option value="assignment">Assignment</option>
-                            </select><br><br>
-                            <label for="grade">Grade:</label>
-                            <input type="number" id="gradeInput" name="grade" min="0" max="100" required><br><br>
-                            <button type="submit" id="submitRecordButton">Submit</button>
-                        </form>
-                    </div>
-                </div>
+                <div id="recordModal" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitle">Add New Record</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="recordForm">
+                                    <input type="hidden" id="editRowId">
+                                    <div class="form-group">
+                                        <label for="name">Name:</label>
+                                        <input type="text" class="form-control" id="nameInput" name="name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="course">Course:</label>
+                                        <input type="text" class="form-control" id="courseInput" name="course" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assessmentType">Assessment Type:</label>
+                                        <select class="form-control" id="assessmentTypeInput" name="assessmentType">
+                                            <option value="quiz">Quiz</option>
+                                            <option value="assignment">Assignment</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="grade">Grade:</label>
+                                        <input type="number" class="form-control" id="gradeInput" name="grade" min="0"
+                                            max="100" required>
+                                    </div>
+                                    <button type="submit" id="submitRecordButton"
+                                        class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
 
-                <script type="text/javascript"
-                    src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
-                <script>
+                        <script type="text/javascript"
+                            src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var tableData = JSON.parse(localStorage.getItem('tabulatorData')) || [];
 
-                    document.addEventListener('DOMContentLoaded', function () {
-                        // Sample data for the table
-                        var sampleData = [
-                            { id: 1, name: "John Doe", course: "Math", assessmentType: "Quiz", grade: 85 },
-                            { id: 2, name: "Jane Smith", course: "Science", assessmentType: "Assignment", grade: 92 },
-                            { id: 3, name: "Alice Johnson", course: "History", assessmentType: "Quiz", grade: 78 }
-                        ];
+                                var table = new Tabulator("#example-table", {
+                                    data: tableData,
+                                    layout: "fitColumns",
+                                    responsiveLayout: "hide",
+                                    selectableRows: true,
+                                    history: true,
+                                    pagination: "local",
+                                    paginationSize: 20,
+                                    paginationCounter: "rows",
+                                    movableColumns: true,
+                                    initialSort: [{ column: "name", dir: "asc" }],
+                                    columns: [
+                                        { title: "Name", field: "name", editor: "input" },
+                                        { title: "Course", field: "course", editor: "input" },
+                                        { title: "Assessment Type", field: "assessmentType", editor: "input" },
+                                        { title: "Grade", field: "grade", editor: "input" }
+                                    ]
+                                });
 
-                        // Initialize Tabulator table with sample data
-                        var table = new Tabulator("#example-table", {
-                            data: sampleData,
-                            // Other configuration options...
-                        });
-
-                        // Store the sample data in localStorage
-                        localStorage.setItem('tabulatorData', JSON.stringify(sampleData));
-                    });
-
-
-                    document.addEventListener('DOMContentLoaded', function () {
-                        var tableData = JSON.parse(localStorage.getItem('tabulatorData')) || [];
-
-                        var table = new Tabulator("#example-table", {
-                            data: tableData,
-                            layout: "fitColumns",
-                            responsiveLayout: "hide",
-                            selectableRows: true,
-                            history: true,
-                            pagination: "local",
-                            paginationSize: 7,
-                            paginationCounter: "rows",
-                            movableColumns: true,
-                            initialSort: [
-                                { column: "name", dir: "asc" }
-                            ],
-                            columnDefaults: {
-                                tooltip: true
-                            },
-                            columns: [
-                                { title: "Name", field: "name", editor: "input" },
-                                { title: "Course", field: "course", editor: "input" },
-                                { title: "Assessment Type", field: "assessmentType", editor: "input" },
-                                { title: "Grade", field: "grade", editor: "input" }
-                            ]
-                        });
-
-
-
-                        function openModalForRecord(record) {
-                            document.getElementById('modalTitle').textContent = 'Edit Record';
-                            document.getElementById('editRowId').value = record.id;
-                            document.getElementById('nameInput').value = record.name;
-                            document.getElementById('courseInput').value = record.course;
-                            document.getElementById('assessmentTypeInput').value = record.assessmentType;
-                            document.getElementById('gradeInput').value = record.grade;
-                            document.getElementById('recordModal').style.display = "block";
-                        }
-
-                        document.getElementById('add-row-button').addEventListener('click', function () {
-                            document.getElementById('modalTitle').textContent = 'Add New Record';
-                            document.getElementById('editRowId').value = '';
-                            document.getElementById('recordForm').reset();
-                            document.getElementById('recordModal').style.display = "block";
-                        });
-
-                        document.getElementsByClassName('close')[0].addEventListener('click', function () {
-                            document.getElementById('recordModal').style.display = "none";
-                        });
-
-                        document.getElementById('recordForm').addEventListener('submit', function (event) {
-                            event.preventDefault();
-
-                            var formData = new FormData(this);
-                            var rowData = {};
-                            formData.forEach(function (value, key) {
-                                rowData[key] = value;
-                            });
-                            rowData.id = document.getElementById('editRowId').value || table.getDataCount() + 1;
-                            rowData.car = rowData.car === 'on'; // Convert checkbox value to boolean
-
-                            if (rowData.id) {
-                                // Update existing record
-                                var existingRecord = table.getData().find(record => record.id == rowData.id);
-                                if (existingRecord) {
-                                    table.updateRow(rowData.id, rowData);
+                                function updateLocalStorageAndCloseModal() {
+                                    localStorage.setItem('tabulatorData', JSON.stringify(table.getData()));
+                                    document.getElementById('recordForm').reset();
+                                    document.getElementById('recordModal').style.display = "none";
                                 }
-                            } else {
-                                // Add new record
-                                table.addRow(rowData, true, "top");
-                            }
 
-                            localStorage.setItem('tabulatorData', JSON.stringify(table.getData()));
+                                document.getElementById('recordForm').addEventListener('submit', function (event) {
+                                    event.preventDefault();
 
-                            // Clear the form and close the modal
-                            document.getElementById('recordForm').reset();
-                            document.getElementById('recordModal').style.display = "none";
-                        });
+                                    var formData = new FormData(this);
+                                    var rowData = {};
+                                    formData.forEach(function (value, key) {
+                                        rowData[key] = value;
+                                    });
+                                    var editRowId = document.getElementById('editRowId').value;
 
-                        document.getElementById('edit-row-button').addEventListener('click', function () {
-                            var selectedRows = table.getSelectedRows();
-                            if (selectedRows.length === 1) {
-                                openModalForRecord(selectedRows[0].getData());
-                            } else {
-                                alert('Please select a single row to edit.');
-                            }
-                        });
+                                    if (editRowId) {
+                                        // Find the existing row in the table
+                                        var existingRow = table.getRow(editRowId);
+                                        if (existingRow) {
+                                            // Update the existing row with new data
+                                            existingRow.update(rowData);
+                                            updateLocalStorageAndCloseModal();
+                                        } else {
+                                            alert('Row not found for editing.');
+                                        }
+                                    } else {
+                                        // Add new row if editRowId is not provided (shouldn't happen here)
+                                        rowData.id = table.getDataCount() + 1;
+                                        table.addData([rowData], true);
+                                        updateLocalStorageAndCloseModal();
+                                    }
+                                });
 
-                        document.getElementById('delete-row-button').addEventListener('click', function () {
-                            var selectedRows = table.getSelectedRows();
-                            if (selectedRows.length > 0) {
-                                selectedRows.forEach(row => table.deleteRow(row));
-                                localStorage.setItem('tabulatorData', JSON.stringify(table.getData()));
-                            } else {
-                                alert('Please select row(s) to delete.');
-                            }
-                        });
-                    });
-                </script>
-            </div>
+                                document.getElementById('add-row-button').addEventListener('click', function () {
+                                    document.getElementById('modalTitle').textContent = 'Add New Record';
+                                    document.getElementById('editRowId').value = '';
+                                    document.getElementById('recordModal').style.display = "block";
+                                });
 
-            <!-- End of Main Content -->
+                                document.getElementsByClassName('close')[0].addEventListener('click', function () {
+                                    document.getElementById('recordModal').style.display = "none";
+                                });
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; SPADE 2024</span>
+                                document.getElementById('edit-row-button').addEventListener('click', function () {
+                                    var selectedRows = table.getSelectedRows();
+                                    if (selectedRows.length === 1) {
+                                        var selectedData = selectedRows[0].getData();
+                                        document.getElementById('modalTitle').textContent = 'Edit Record';
+                                        document.getElementById('editRowId').value = selectedData.id;
+                                        document.getElementById('nameInput').value = selectedData.name;
+                                        document.getElementById('courseInput').value = selectedData.course;
+                                        document.getElementById('assessmentTypeInput').value = selectedData.assessmentType;
+                                        document.getElementById('gradeInput').value = selectedData.grade;
+                                        document.getElementById('recordModal').style.display = "block";
+                                    } else {
+                                        alert('Please select a single row to edit.');
+                                    }
+                                });
+
+                                document.getElementById('delete-row-button').addEventListener('click', function () {
+                                    var selectedRows = table.getSelectedRows();
+                                    if (selectedRows.length > 0) {
+                                        selectedRows.forEach(row => table.deleteRow(row));
+                                        updateLocalStorageAndCloseModal();
+                                    } else {
+                                        alert('Please select row(s) to delete.');
+                                    }
+                                });
+                            });
+
+
+                        </script>
                     </div>
+
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white fixed-bottom">
+                        <div class="container text-center">
+                            <span class="text-muted">Copyright &copy; SPADE 2024</span>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
                 </div>
-            </footer>
-            <!-- End of Footer -->
+                <!-- End of Content Wrapper -->
 
-        </div>
-        <!-- End of Content Wrapper -->
+            </div>
+            <!-- End of Page Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+            <!-- Tabulator library -->
+            <script src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+            <!-- Bootstrap core JavaScript-->
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+            <!-- Core plugin JavaScript-->
+            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+            <!-- Custom scripts for all pages-->
+            <script src="js/sb-admin-2.min.js"></script>
+
+            <!-- Page level plugins -->
+            <script src="vendor/chart.js/Chart.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="js/demo/chart-area-demo.js"></script>
+            <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
 
