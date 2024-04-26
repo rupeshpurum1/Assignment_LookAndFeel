@@ -122,9 +122,6 @@
 
             <hr class="sidebar-divider">
 
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
 
         </ul>
         <!-- End of Sidebar -->
@@ -189,6 +186,14 @@
                                         <input type="number" class="form-control" id="gradeInput" name="grade" min="0"
                                             max="100" required>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="strengths">Topics Covered:</label>
+                                        <input type="text" class="form-control" id="strengthsid" name="strengths" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="improvement">Learning Outcomes:</label>
+                                        <input type="text" class="form-control" id="improvementid" name="improvement" required>
+                                    </div>
                                     <button type="submit" id="submitRecordButton"
                                         class="btn btn-primary">Submit</button>
                                 </form>
@@ -202,20 +207,21 @@
 
                             document.addEventListener('DOMContentLoaded', function () {
                                 var tableData = [
-                                    { id: 1, name: 'John Doe', course: 'Math', assessmentType: 'Quiz', grade: 85 },
-                                    { id: 2, name: 'Jane Smith', course: 'English', assessmentType: 'Assignment', grade: 92 },
-                                    { id: 3, name: 'Tom Brown', course: 'Science', assessmentType: 'Quiz', grade: 78 },
-                                    { id: 4, name: 'Alice Johnson', course: 'History', assessmentType: 'Assignment', grade: 88 },
-                                    { id: 5, name: 'Bob White', course: 'Geography', assessmentType: 'Quiz', grade: 90 },
-                                    { id: 6, name: 'John Doe', course: 'DIS', assessmentType: 'Quiz', grade: 85 },
-                                    { id: 7, name: 'Jane Smith', course: 'DIS', assessmentType: 'Assignment', grade: 92 },
-                                    { id: 8, name: 'Tom Brown', course: 'DIS', assessmentType: 'Quiz', grade: 78 },
-                                    { id: 9, name: 'Alice Johnson', course: 'DIS', assessmentType: 'Assignment', grade: 88 },
-                                    { id: 10, name: 'John Doe', course: 'DSP', assessmentType: 'Quiz', grade: 85 },
-                                    { id: 11, name: 'Jane Smith', course: 'DSP', assessmentType: 'Assignment', grade: 92 },
-                                    { id: 12, name: 'Tom Brown', course: 'DSP', assessmentType: 'Quiz', grade: 78 },
-                                    { id: 13, name: 'Alice Johnson', course: 'DSP', assessmentType: 'Assignment', grade: 88 }
-                                ];
+    { id: 1, name: 'John Doe', course: 'Math', assessmentType: 'Quiz', grade: 85, strengths: 'Geometry', improvement: 'Calculus' },
+    { id: 2, name: 'Jane Smith', course: 'English', assessmentType: 'Assignment', grade: 92, strengths: 'Literary Analysis', improvement: 'Writing Skills' },
+    { id: 3, name: 'Tom Brown', course: 'Science', assessmentType: 'Quiz', grade: 78, strengths: 'Experimental Method', improvement: 'Data Interpretation' },
+    { id: 4, name: 'Alice Johnson', course: 'History', assessmentType: 'Assignment', grade: 88, strengths: 'Historical Analysis', improvement: 'Research Skills' },
+    { id: 5, name: 'Bob White', course: 'Geography', assessmentType: 'Quiz', grade: 90, strengths: 'Spatial Understanding', improvement: 'Map Interpretation' },
+    { id: 6, name: 'John Doe', course: 'DIS', assessmentType: 'Quiz', grade: 85, strengths: 'Critical Thinking', improvement: 'Presentation Skills' },
+    { id: 7, name: 'Jane Smith', course: 'DIS', assessmentType: 'Assignment', grade: 92, strengths: 'Problem Solving', improvement: 'Collaboration' },
+    { id: 8, name: 'Tom Brown', course: 'DIS', assessmentType: 'Quiz', grade: 78, strengths: 'Data Analysis', improvement: 'Technical Writing' },
+    { id: 9, name: 'Alice Johnson', course: 'DIS', assessmentType: 'Assignment', grade: 88, strengths: 'Statistical Skills', improvement: 'Project Management' },
+    { id: 10, name: 'John Doe', course: 'DSP', assessmentType: 'Quiz', grade: 85, strengths: 'Signal Processing', improvement: 'Algorithm Design' },
+    { id: 11, name: 'Jane Smith', course: 'DSP', assessmentType: 'Assignment', grade: 92, strengths: 'Digital Communication', improvement: 'Coding Efficiency' },
+    { id: 12, name: 'Tom Brown', course: 'DSP', assessmentType: 'Quiz', grade: 78, strengths: 'Filter Design', improvement: 'Simulation Techniques' },
+    { id: 13, name: 'Alice Johnson', course: 'DSP', assessmentType: 'Assignment', grade: 88, strengths: 'System Analysis', improvement: 'Problem-solving' }
+];
+
 
                                 var table = new Tabulator("#example-table", {
                                     data: tableData,
@@ -232,7 +238,9 @@
                                         { title: "Name", field: "name", editor: "input" },
                                         { title: "Course", field: "course", editor: "input" },
                                         { title: "Assessment Type", field: "assessmentType", editor: "input" },
-                                        { title: "Grade", field: "grade", editor: "input" }
+                                        { title: "Grade", field: "grade", editor: "input" },
+                                        {title: "strengths", field: "strengths", editor: "input" },
+                                        {title: "improvement", field: "improvement", editor: "input" }
                                     ]
                                 });
 
