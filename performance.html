@@ -1,138 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
+    <style>
+        .sidebar {
+            background-color: #08a8f1;
+            /* Sidebar background color */
+        }
+    
+        .nav-link {
+            color: #ffffff;
+            /* Text color for nav links */
+            text-decoration: none;
+            /* Remove underline from links */
+            display: flex;
+            align-items: center;
+        }
+    
+        .nav-link:hover {
+            background-color: #070ff0a7;
+            /* Background color on hover */
+            border-radius: 5px;
+            /* Optional: Add rounded corners on hover */
+        }
+    
+        .nav-link i {
+            margin-right: 10px;
+            /* Spacing between icon and text */
+        }
 
-<style>
-    .sidebar {
-        background-color: #08a8f1;
-        /* Sidebar background color */
-    }
 
-    .nav-link {
-        color: #ffffff;
-        /* Text color for nav links */
-        text-decoration: none;
-        /* Remove underline from links */
-        display: flex;
-        align-items: center;
-    }
+canvas {
+    width: 100%;
+    height: 100%;
+}
 
-    .nav-link:hover {
-        background-color: #070ff0a7;
-        /* Background color on hover */
-        border-radius: 5px;
-        /* Optional: Add rounded corners on hover */
-    }
-
-    .nav-link i {
-        margin-right: 10px;
-        /* Spacing between icon and text */
-    }
-</style>
-
+    </style>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Student Performance Analysis Dashboard Engine</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar omitted for brevity -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <img src="img/favicon.ico" alt="Icon" width="30" height="30" style="margin-right: 10px;">
-                <!-- Adjust width and height as needed -->
-                <div class="sidebar-brand-text mx-3">SPADE</div>
-            </a>
-
+            <li class="sidebar-brand">
+                <a class="nav-link" href="#">
+                    <img src="./img/favicon.ico" alt="Icon" width="30" height="30" style="margin-right: 10px;">
+                    <div class="sidebar-brand-text mx-3">SPADE</div>
+                </a>
+            </li>
+            <br>
+            <br>
             <hr class="sidebar-divider my-0">
-            <br>
-            <br>
-
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="Index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Home Page</span></a>
+                    <span>Home Page</span>
+                </a>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item active">
                 <a class="nav-link" href="grades.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Assessments/Grades</span></a>
+                    <span>Assessments/Grades</span>
+                </a>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item active">
                 <a class="nav-link" href="performance.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Performance Trends</span></a>
+                    <span>Performance Trends</span>
+                </a>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item active">
                 <a class="nav-link" href="about.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>About Page</span></a>
+                    <span>About Page</span>
+                </a>
             </li>
-
             <hr class="sidebar-divider">
-
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
 
         </ul>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-
-                <!-- Topbar omitted for brevity -->
-
                 <div class="container-fluid">
-
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Performance Stats</h1>
 
                     <!-- Content Row -->
-                    <div class="row">
+                    
 
-                        <div class="col-xl-8 col-lg-7">
-                            <!-- Average Grades Scatter Plot -->
-                            <!-- <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Average Grades</h6>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="averageGradesChart"></canvas>
-                                </div>
-                            </div> -->
+        <!-- Course Selection Dropdown -->
+        <div class="mb-4">
+            <label for="courseSelect">Select Course:</label>
+            <select id="courseSelect" class="form-control">
+                <option value="course1">Math</option>
+                <option value="course2">DIS</option>
+                <option value="course3">Chemistry</option>
+            </select>
+        </div>
+  </div>
 
-                            <!-- Grade Ranges Bar Chart -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Grade Ranges</h6>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="gradeRangesChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+  <div class="row">
+    <!-- Grade Ranges Bar Chart -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Grade Ranges</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="gradeRangesChart" style="width: 100%; height: 100%;"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- Pass/Fail Pie Chart -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Pass/Fail</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="passFailChart" style="width: 100%; height: 100%;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="col-lg-12 mb-4">
+        <!-- Student Performance Scatter Plot -->
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Student Performance</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="studentPerformanceChart" style="height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+<
+
+</div>
+
                 </div>
             </div>
-
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
@@ -144,90 +168,121 @@
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom scripts for all pages -->
+    <script src="~/js/sb-admin-2.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Dummy Data and Chart Scripts -->
     <script>
-        // Dummy data for average grades scatter plot
-        const students = ['Alice', 'Bob', 'Charlie', 'David', 'Eve'];
-        const grades = [78, 85, 70, 90, 82];
+    // Dummy data for pass and fail counts
+    const passFailData = {
+        course1: [70, 30], // Sample data (number of students who passed and failed) for course 1
+        course2: [60, 40], // Sample data for course 2
+        course3: [80, 20]  // Sample data for course 3
+    };
 
-        // Dummy data for grade ranges bar chart
-        const gradeRangesData = {
-            labels: ['0-60', '61-70', '71-80', '81-90', '91-100'],
-            datasets: [{
-                label: 'Grade Range',
-                backgroundColor: ['#ff6b6b', '#f9ca24', '#00b894', '#0984e3', '#6c5ce7'],
-                data: [10, 20, 30, 25, 15] // Sample data (number of students in each range)
-            }]
-        };
+    // Dummy data for grade ranges bar chart
+    const gradeRangesData = {
+        course1: [10, 20, 30, 25, 15], // Sample data (number of students in each range) for course 1
+        course2: [15, 25, 35, 20, 5],  // Sample data for course 2
+        course3: [5, 15, 40, 30, 10]    // Sample data for course 3
+    };
 
-        // Initialize charts
-        document.addEventListener('DOMContentLoaded', function () {
-            // Average Grades Scatter Plot
-            new Chart(document.getElementById('averageGradesChart'), {
-                type: 'scatter',
-                data: {
-                    labels: students,
-                    datasets: [{
-                        label: 'Grades',
-                        data: grades,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                autoSkip: false,
-                                maxRotation: 45,
-                                minRotation: 45
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Grades'
-                            }
-                        }]
-                    }
+    // Dummy data for student performance scatter plot
+    const studentPerformanceData = {
+        course1: [
+            { x: 60, y: 70 },
+            { x: 75, y: 85 },
+            { x: 50, y: 60 },
+            // Add more data points for course 1
+        ],
+        course2: [
+            { x: 80, y: 90 },
+            { x: 65, y: 75 },
+            { x: 70, y: 80 },
+            // Add more data points for course 2
+        ],
+        course3: [
+            { x: 55, y: 65 },
+            { x: 90, y: 95 },
+            { x: 40, y: 50 },
+            // Add more data points for course 3
+        ]
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const passFailChart = new Chart(document.getElementById('passFailChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Pass', 'Fail'],
+                datasets: [{
+                    data: passFailData.course1, // Default data for initial course
+                    backgroundColor: ['#00b894', '#ff6b6b']
+                }]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'right'
                 }
-            });
-
-            // Grade Ranges Bar Chart
-            new Chart(document.getElementById('gradeRangesChart'), {
-                type: 'bar',
-                data: gradeRangesData,
-                options: {
-                    legend: {
-                        display: false
-                    },
-                    scales: {
-                        xAxes: [{
-                            gridLines: {
-                                display: false
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            });
+            }
         });
-    </script>
-</body>
 
+        const gradeRangesChart = new Chart(document.getElementById('gradeRangesChart'), {
+            type: 'bar',
+            data: {
+                labels: ['0-60', '61-70', '71-80', '81-90', '91-100'],
+                datasets: [{
+                    label: 'Grade Range',
+                    backgroundColor: ['#ff6b6b', '#f9ca24', '#00b894', '#0984e3', '#6c5ce7'],
+                    data: gradeRangesData.course1 // Default data for initial course
+                }]
+            },
+            options: {
+                responsive: true,
+                legend: { display: false },
+                scales: {
+                    xAxes: [{ gridLines: { display: false } }],
+                    yAxes: [{ ticks: { beginAtZero: true } }]
+                }
+            }
+        });
+
+        const studentPerformanceChart = new Chart(document.getElementById('studentPerformanceChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Student Performance',
+                    borderColor: '#4e73df',
+                    backgroundColor: '#4e73df',
+                    data: studentPerformanceData.course1 // Default data for initial course
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Update all charts based on course selection
+        document.getElementById('courseSelect').addEventListener('change', function () {
+            const selectedCourse = this.value;
+            passFailChart.data.datasets[0].data = passFailData[selectedCourse];
+            passFailChart.update();
+
+            gradeRangesChart.data.datasets[0].data = gradeRangesData[selectedCourse];
+            gradeRangesChart.update();
+
+            studentPerformanceChart.data.datasets[0].data = studentPerformanceData[selectedCourse];
+            studentPerformanceChart.update();
+        });
+    });
+</script>
+
+
+</body>
 </html>
